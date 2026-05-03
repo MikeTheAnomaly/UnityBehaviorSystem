@@ -148,4 +148,19 @@ public class BehaviorGraphExecutor
     /// Resets execution to the entry node.
     /// </summary>
     public void Reset() => _currentNodeId = _graph.EntryNodeId;
+
+    /// <summary>
+    /// Resets execution to a specific node if the node exists.
+    /// Returns false when the node is not part of the graph.
+    /// </summary>
+    public bool TryReset(NodeId targetNodeId)
+    {
+        if (_graph.GetNode(targetNodeId) == null)
+        {
+            return false;
+        }
+
+        _currentNodeId = targetNodeId;
+        return true;
+    }
 }

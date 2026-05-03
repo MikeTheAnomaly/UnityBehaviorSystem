@@ -32,6 +32,44 @@ namespace BehaviorSystem.Tests.Graph
             Assert.Throws<System.ArgumentNullException>(() => new BehaviorGraphExecutor(null));
         }
 
+        [Test]
+        public void TryReset_TargetNodeExists_ResetsCurrentNode()
+        {
+            var graph = new BehaviorGraphBuilder()
+                .WithEntry("entry", new MockAction())
+                .AddNode("other", new MockAction())
+                .AddEdge("entry", "other", new AlwaysTrueCondition())
+                .AddEdge("other", "other", new AlwaysTrueCondition())
+                .Build();
+
+            var executor = new BehaviorGraphExecutor(graph);
+            Assert.AreEqual(NodeId.Create("entry"), executor.GetCurrentNodeId());
+
+            var result = executor.TryReset(NodeId.Create("other"));
+
+            Assert.IsTrue(result);
+            Assert.AreEqual(NodeId.Create("other"), executor.GetCurrentNodeId());
+        }
+
+        [Test]
+        public void TryReset_TargetNodeMissing_DoesNotChangeCurrentNode()
+        {
+            var graph = new BehaviorGraphBuilder()
+                .WithEntry("entry", new MockAction())
+                .AddNode("other", new MockAction())
+                .AddEdge("entry", "other", new AlwaysTrueCondition())
+                .AddEdge("other", "other", new AlwaysTrueCondition())
+                .Build();
+
+            var executor = new BehaviorGraphExecutor(graph);
+            var before = executor.GetCurrentNodeId();
+
+            var result = executor.TryReset(NodeId.Create("missing"));
+
+            Assert.IsFalse(result);
+            Assert.AreEqual(before, executor.GetCurrentNodeId());
+        }
+
         [UnityTest]
         public IEnumerator ExecuteIteration_SingleNode_ExecutesAction()
         {
