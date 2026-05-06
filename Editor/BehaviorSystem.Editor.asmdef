@@ -1,12 +1,8 @@
 {
-    "name": "Tests",
+    "name": "BehaviorSystem.Editor",
     "rootNamespace": "",
     "references": [
-        "BehaviorSystem",
-        "Examples"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "BehaviorSystem"
     ],
     "includePlatforms": [
         "Editor"
@@ -16,9 +12,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [
-        "UNITY_INCLUDE_TESTS"
-    ],
+    "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
 }
